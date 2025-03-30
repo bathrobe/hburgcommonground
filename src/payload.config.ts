@@ -17,7 +17,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 // Configure the Lexical editor with common features
-const lexicalRichTextEditor = lexicalEditor()
+const lexicalRichTextEditor = lexicalEditor({})
 
 export default buildConfig({
   admin: {

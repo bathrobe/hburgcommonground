@@ -3,6 +3,34 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { LinkJSXConverter } from '@payloadcms/richtext-lexical/react'
+import type { DefaultNodeTypes, SerializedLinkNode } from '@payloadcms/richtext-lexical'
+
+// Function to convert internal links to proper href values
+const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
+  const { relationTo, value } = linkNode.fields.doc!
+  if (typeof value !== 'object') {
+    return '/'
+  }
+
+  const slug = value.slug
+
+  switch (relationTo) {
+    case 'blogposts':
+      return `/blog/${slug}`
+    default:
+      return `/${relationTo}/${slug}`
+  }
+}
+
+// Set up JSX converters for rich text - use the provided LinkJSXConverter
+const getJSXConverters = ({ defaultConverters }: { defaultConverters: any }) => ({
+  ...defaultConverters,
+  // Use the LinkJSXConverter helper instead of directly manipulating the link converter
+  ...LinkJSXConverter({ internalDocToHref }),
+})
 
 export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params
@@ -32,7 +60,7 @@ export async function generateStaticParams() {
     collection: 'blogposts',
   })
 
-  return docs.map((post) => ({
+  return docs.map((post: any) => ({
     slug: post.slug,
   }))
 }
@@ -47,10 +75,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         equals: slug,
       },
     },
-    depth: 1, // To populate the author relationship
+    depth: 3, // Increased depth to properly populate author data and rich text relationships
   })
 
-  const post = docs[0]
+  const post: any = docs[0]
 
   if (!post) return notFound()
 
@@ -92,10 +120,46 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <p className="text-xl text-gray-600 leading-relaxed">{post.description}</p>
         </div>
 
-        {/* Content section will be added later */}
-        <div className="border-t border-gray-200 pt-8 text-center text-gray-500">
-          Rich text content will be added in a future update
+        {/* Rich text content */}
+        <div className="prose prose-lg max-w-none prose-a:text-blue-600 prose-a:underline">
+          {post.content && (
+            <RichText data={post.content as SerializedEditorState} converters={getJSXConverters} />
+          )}
         </div>
+
+        {/* Author card */}
+        {post.author && typeof post.author === 'object' && (
+          <div className="mt-12 p-6 border-t border-border">
+            <div className="flex items-start gap-4">
+              {post.author.avatar &&
+                typeof post.author.avatar === 'object' &&
+                post.author.avatar.url && (
+                  <div className="relative w-16 h-16 flex-shrink-0">
+                    <Image
+                      src={post.author.avatar.url}
+                      alt={post.author.name || 'Author'}
+                      fill
+                      className="object-cover rounded-full"
+                    />
+                  </div>
+                )}
+              <div>
+                <h3 className="text-xl font-semibold mb-2">{post.author.name}</h3>
+                {post.author.bio && <p className="text-muted-foreground">{post.author.bio}</p>}
+                {post.author.email && (
+                  <p className="mt-2 text-sm">
+                    <a
+                      href={`mailto:${post.author.email}`}
+                      className="text-primary hover:underline"
+                    >
+                      {post.author.email}
+                    </a>
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </article>
     </div>
   )
