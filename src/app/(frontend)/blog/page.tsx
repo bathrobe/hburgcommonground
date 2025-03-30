@@ -49,7 +49,10 @@ const BlogCard = ({ post }: { post: any }) => {
     : null
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <Link
+      href={`/blog/${post.slug}`}
+      className="block border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+    >
       {/* Feature Image */}
       <div className="relative h-48 w-full">
         {post.featureImg?.url ? (
@@ -64,13 +67,16 @@ const BlogCard = ({ post }: { post: any }) => {
       {/* Card content */}
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-2 line-clamp-2">{post.title}</h2>
-        <p className="text-gray-600 text-sm mb-3">{formattedDate}</p>
+        <div className="flex justify-between items-center mb-3">
+          <p className="text-gray-600 text-sm">{formattedDate}</p>
+          {post.author?.name && (
+            <p className="text-gray-700 text-sm italic">By {post.author.name}</p>
+          )}
+        </div>
         <p className="text-gray-600 mb-4 line-clamp-3">{post.description}</p>
-        <Link href={`/blog/${post.slug}`} className="text-blue-600 hover:text-blue-800 font-medium">
-          Read more
-        </Link>
+        <span className="text-blue-600 hover:text-blue-800 font-medium">Read more</span>
       </div>
-    </div>
+    </Link>
   )
 }
 

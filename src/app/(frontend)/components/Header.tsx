@@ -6,7 +6,10 @@ const Header = () => {
     <header className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">
-          <Link href="/">My Site</Link>
+          <Link href="/">
+            <span className="md:hidden">HCG</span>
+            <span className="hidden md:inline">Harrisonburg Common Ground</span>
+          </Link>
         </h1>
         <nav>
           <ul className="flex space-x-6">

@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     events: Event;
     blogposts: Blogpost;
+    authors: Author;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     blogposts: BlogpostsSelect<false> | BlogpostsSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -141,6 +143,7 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  _key?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -177,7 +180,7 @@ export interface Blogpost {
    * URL-friendly version of the title
    */
   slug: string;
-  author: number | User;
+  author: number | Author;
   description: string;
   content?: {
     root: {
@@ -204,6 +207,18 @@ export interface Blogpost {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  image?: (number | null) | Media;
+  bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -224,6 +239,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blogposts';
         value: number | Blogpost;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -288,6 +307,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  _key?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -324,6 +344,17 @@ export interface BlogpostsSelect<T extends boolean = true> {
   content?: T;
   featureImg?: T;
   publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  image?: T;
+  bio?: T;
   updatedAt?: T;
   createdAt?: T;
 }

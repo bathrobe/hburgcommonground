@@ -27,7 +27,7 @@ export const BlogPost: CollectionConfig = {
     {
       name: 'author',
       type: 'relationship',
-      relationTo: 'users',
+      relationTo: 'authors',
       required: true,
     },
     {
