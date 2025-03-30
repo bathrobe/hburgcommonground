@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
-export const Blogpost: CollectionConfig = {
+export const BlogPost: CollectionConfig = {
   slug: 'blogposts',
   admin: {
     useAsTitle: 'title',
