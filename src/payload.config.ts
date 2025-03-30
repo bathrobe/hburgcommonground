@@ -15,6 +15,9 @@ import Events from './collections/Events'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Configure the Lexical editor with common features
+const lexicalRichTextEditor = lexicalEditor()
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -23,7 +26,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Events, BlogPost],
-  editor: lexicalEditor(),
+  editor: lexicalRichTextEditor,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

@@ -179,7 +179,7 @@ export interface Blogpost {
   slug: string;
   author: number | User;
   description: string;
-  content: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -193,7 +193,7 @@ export interface Blogpost {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   featureImg: number | Media;
   /**
    * Date this post was published

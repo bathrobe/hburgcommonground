@@ -39,7 +39,6 @@ export const BlogPost: CollectionConfig = {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor({}),
-      required: true,
     },
     {
       name: 'featureImg',
