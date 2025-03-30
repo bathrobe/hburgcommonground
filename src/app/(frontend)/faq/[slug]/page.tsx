@@ -32,7 +32,7 @@ const getJSXConverters = ({ defaultConverters }: { defaultConverters: any }) => 
   ...LinkJSXConverter({ internalDocToHref }),
 })
 
-export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
+export const generateMetadata = async ({ params }: { params: any }) => {
   const { slug } = params
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
@@ -65,7 +65,7 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function FaqPage({ params }: { params: { slug: string } }) {
+export default async function FaqPage({ params }: { params: any }) {
   const { slug } = params
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
