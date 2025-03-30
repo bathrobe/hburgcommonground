@@ -32,7 +32,8 @@ const getJSXConverters = ({ defaultConverters }: { defaultConverters: any }) => 
   ...LinkJSXConverter({ internalDocToHref }),
 })
 
-export const generateMetadata = async ({ params }: { params: { slug: string } }) => {
+// DO NOT CHANGE ANY TYPES HERE
+export const generateMetadata = async ({ params }: { params: any }) => {
   const { slug } = await params
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
@@ -65,7 +66,7 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: any }) {
   const { slug } = await params
   const payload = await getPayload({ config })
   const { docs } = await payload.find({

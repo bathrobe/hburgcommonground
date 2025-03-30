@@ -72,6 +72,7 @@ export interface Config {
     events: Event;
     blogposts: Blogpost;
     authors: Author;
+    faq: Faq;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     blogposts: BlogpostsSelect<false> | BlogpostsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -219,6 +221,32 @@ export interface Author {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: number;
+  title: string;
+  slug: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -243,6 +271,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'authors';
         value: number | Author;
+      } | null)
+    | ({
+        relationTo: 'faq';
+        value: number | Faq;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -355,6 +387,17 @@ export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   bio?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq_select".
+ */
+export interface FaqSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }

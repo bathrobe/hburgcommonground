@@ -13,6 +13,7 @@ import { Media } from './collections/Media'
 import { BlogPost } from './collections/BlogPost'
 import Events from './collections/Events'
 import Authors from './collections/Authors'
+import FaqPage from './collections/FaqPage'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -26,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Events, BlogPost, Authors],
+  collections: [Users, Media, Events, BlogPost, Authors, FaqPage],
   editor: lexicalRichTextEditor,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
