@@ -2,9 +2,38 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 
+// Define type for FAQ items
+type FaqItem = {
+  id: string
+  title: string
+  slug: string
+}
+
 const Header = () => {
   const [isFaqOpen, setIsFaqOpen] = useState(false)
+  const [faqItems, setFaqItems] = useState<FaqItem[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const dropdownRef = useRef<HTMLLIElement>(null)
+
+  // Fetch FAQ items on component mount
+  useEffect(() => {
+    const fetchFaqItems = async () => {
+      try {
+        const response = await fetch('/api/faq')
+        if (!response.ok) throw new Error('Failed to fetch FAQ items')
+        const data = await response.json()
+        setFaqItems(data.docs)
+      } catch (error) {
+        console.error('Error fetching FAQ items:', error)
+        // Set empty array as fallback
+        setFaqItems([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchFaqItems()
+  }, [])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -62,34 +91,31 @@ const Header = () => {
 
               {isFaqOpen && (
                 <div className="absolute z-10 mt-2 w-48 bg-gray-700 rounded-md shadow-lg py-1 right-0 md:left-0">
-                  <Link
-                    href="/faq/route1"
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-600"
-                    onClick={() => setIsFaqOpen(false)}
-                  >
-                    FAQ Topic 1
-                  </Link>
-                  <Link
-                    href="/faq/route2"
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-600"
-                    onClick={() => setIsFaqOpen(false)}
-                  >
-                    FAQ Topic 2
-                  </Link>
-                  <Link
-                    href="/faq/route3"
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-600"
-                    onClick={() => setIsFaqOpen(false)}
-                  >
-                    FAQ Topic 3
-                  </Link>
-                  <Link
-                    href="/faq"
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-600 border-t border-gray-600"
-                    onClick={() => setIsFaqOpen(false)}
-                  >
-                    All FAQs
-                  </Link>
+                  {isLoading ? (
+                    <div className="px-4 py-2 text-sm text-white">Loading...</div>
+                  ) : faqItems.length === 0 ? (
+                    <div className="px-4 py-2 text-sm text-white">No FAQ items found</div>
+                  ) : (
+                    <>
+                      {faqItems.map((item) => (
+                        <Link
+                          key={item.id}
+                          href={`/faq/${item.slug}`}
+                          className="block px-4 py-2 text-sm text-white hover:bg-gray-600"
+                          onClick={() => setIsFaqOpen(false)}
+                        >
+                          {item.title}
+                        </Link>
+                      ))}
+                      <Link
+                        href="/faq"
+                        className="block px-4 py-2 text-sm text-white hover:bg-gray-600 border-t border-gray-600"
+                        onClick={() => setIsFaqOpen(false)}
+                      >
+                        All FAQs
+                      </Link>
+                    </>
+                  )}
                 </div>
               )}
             </li>

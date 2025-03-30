@@ -1,24 +1,42 @@
 import React from 'react'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
+import Link from 'next/link'
 
 export const metadata = {
-  title: 'FAQ | My Site',
-  description: 'Frequently asked questions',
+  title: 'FAQ | Harrisonburg Common Ground',
+  description: 'Frequently Asked Questions about Harrisonburg Common Ground',
 }
 
-const FAQPage = () => {
+export default async function FaqIndexPage() {
+  const payload = await getPayload({ config })
+  const { docs } = await payload.find({
+    collection: 'faq',
+    sort: 'title',
+  })
+
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">Frequently Asked Questions</h1>
-      <p className="text-gray-600 mb-8">Find answers to common questions below.</p>
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold mb-8">Frequently Asked Questions</h1>
 
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold">What is this site about?</h2>
-          <p className="text-gray-600">This is a placeholder answer for the FAQ.</p>
-        </div>
+        {docs.length === 0 ? (
+          <p className="text-lg text-gray-600">No FAQ items found.</p>
+        ) : (
+          <div className="space-y-6">
+            {docs.map((faq: any) => (
+              <div key={faq.id} className="border-b border-gray-200 pb-4">
+                <Link
+                  href={`/faq/${faq.slug}`}
+                  className="text-xl font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  {faq.title}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-export default FAQPage
