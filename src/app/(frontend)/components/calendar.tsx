@@ -21,77 +21,16 @@ import {
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/hooks/use-mobile'
 
-// Types for our calendar
+// Types for our calendar matching the Events collection schema
 interface CalendarEvent {
-  id: string
+  id: number
   title: string
   date: Date
   description: string
   location?: string
-  color?: string
 }
 
-// Sample events data
-const sampleEvents: CalendarEvent[] = [
-  {
-    id: '1',
-    title: 'Team Meeting',
-    date: new Date(2025, 2, 15, 10, 0),
-    description: 'Weekly team sync to discuss project progress and blockers.',
-    location: 'Conference Room A',
-    color: 'bg-blue-500',
-  },
-  {
-    id: '2',
-    title: 'Lunch with Client',
-    date: new Date(2025, 2, 18, 12, 30),
-    description: 'Discuss new project requirements over lunch.',
-    location: 'Downtown Bistro',
-    color: 'bg-green-500',
-  },
-  {
-    id: '3',
-    title: 'Product Demo',
-    date: new Date(2025, 2, 22, 14, 0),
-    description: 'Present the new features to the stakeholders.',
-    location: 'Main Auditorium',
-    color: 'bg-purple-500',
-  },
-  {
-    id: '4',
-    title: 'Interview',
-    date: new Date(2025, 2, 22, 11, 0),
-    description: 'Interview candidate for the developer position.',
-    location: 'Meeting Room B',
-    color: 'bg-yellow-500',
-  },
-  {
-    id: '5',
-    title: 'Project Deadline',
-    date: new Date(2025, 2, 28, 17, 0),
-    description: 'Final submission of the project deliverables.',
-    location: 'Online',
-    color: 'bg-red-500',
-  },
-  {
-    id: '6',
-    title: 'Training Session',
-    date: new Date(2025, 2, 10, 9, 0),
-    description: 'New tool training for the development team.',
-    location: 'Training Room',
-    color: 'bg-indigo-500',
-  },
-  {
-    id: '7',
-    title: 'Code Review',
-    date: new Date(2025, 2, 15, 14, 0),
-    description: 'Review pull requests and discuss code quality.',
-    location: 'Online',
-    color: 'bg-blue-500',
-  },
-]
-
-export default function Calendar() {
+export default function Calendar({ events }: { events: CalendarEvent[] }) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
   const [open, setOpen] = useState(false)
@@ -130,8 +69,10 @@ export default function Calendar() {
   }
 
   // Format time to display
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
+  const formatTime = (date: Date | string) => {
+    // Ensure date is a Date object
+    const dateObj = date instanceof Date ? date : new Date(date)
+    return dateObj.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -139,8 +80,10 @@ export default function Calendar() {
 
   // Get events for a specific day
   const getEventsForDay = (day: number) => {
-    return sampleEvents.filter((event) => {
-      const eventDate = event.date
+    return events.filter((event) => {
+      // Convert string date to Date object if it's not already a Date
+      const eventDate = event.date instanceof Date ? event.date : new Date(event.date)
+
       return (
         eventDate.getFullYear() === currentYear &&
         eventDate.getMonth() === currentMonth &&
@@ -195,7 +138,7 @@ export default function Calendar() {
                     date: date,
                     description: `${eventsForDay.length} events scheduled`,
                     dayEvents: eventsForDay,
-                  } as CalendarEvent & { dayEvents: CalendarEvent[] }
+                  } as any
 
                   handleEventClick(dayViewEvent)
                 }}
@@ -208,8 +151,7 @@ export default function Calendar() {
                   key={event.id}
                   onClick={() => handleEventClick(event)}
                   className={cn(
-                    'text-xs p-1 rounded cursor-pointer text-white truncate',
-                    event.color || 'bg-blue-500',
+                    'text-xs p-1.5 rounded cursor-pointer truncate bg-blue-600 text-white font-medium',
                   )}
                 >
                   {event.title}
@@ -302,15 +244,25 @@ export default function Calendar() {
             <DrawerHeader className="text-left">
               <DrawerTitle>{selectedEvent?.title}</DrawerTitle>
               <DrawerDescription>
-                {selectedEvent?.date.toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}{' '}
-                {selectedEvent &&
-                  !('dayEvents' in selectedEvent) &&
-                  `at ${formatTime(selectedEvent.date)}`}
+                {selectedEvent ? (
+                  <>
+                    {(selectedEvent.date instanceof Date
+                      ? selectedEvent.date
+                      : new Date(selectedEvent.date)
+                    ).toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}{' '}
+                    {!('dayEvents' in selectedEvent) &&
+                      `at ${formatTime(
+                        selectedEvent.date instanceof Date
+                          ? selectedEvent.date
+                          : new Date(selectedEvent.date),
+                      )}`}
+                  </>
+                ) : null}
               </DrawerDescription>
             </DrawerHeader>
             <div className="px-4 pb-8">{renderEventDetails()}</div>
@@ -352,15 +304,25 @@ export default function Calendar() {
           <DialogHeader>
             <DialogTitle>{selectedEvent?.title}</DialogTitle>
             <DialogDescription>
-              {selectedEvent?.date.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}{' '}
-              {selectedEvent &&
-                !('dayEvents' in selectedEvent) &&
-                `at ${formatTime(selectedEvent.date)}`}
+              {selectedEvent ? (
+                <>
+                  {(selectedEvent.date instanceof Date
+                    ? selectedEvent.date
+                    : new Date(selectedEvent.date)
+                  ).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}{' '}
+                  {!('dayEvents' in selectedEvent) &&
+                    `at ${formatTime(
+                      selectedEvent.date instanceof Date
+                        ? selectedEvent.date
+                        : new Date(selectedEvent.date),
+                    )}`}
+                </>
+              ) : null}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">{renderEventDetails()}</div>
