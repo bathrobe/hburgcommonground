@@ -9,7 +9,9 @@ const ContactPage = () => {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
-      <p className="text-gray-600 mb-8">We'd love to hear from you. Here's how to reach us.</p>
+      <p className="text-gray-600 mb-8">
+        We&apos;d love to hear from you. Here&apos;s how to reach us.
+      </p>
 
       <div className="max-w-lg">
         <div className="mb-6">
