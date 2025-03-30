@@ -1,5 +1,7 @@
 import React from 'react'
 import './globals.css'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -11,8 +13,10 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
       </body>
     </html>
   )
