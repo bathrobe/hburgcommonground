@@ -286,7 +286,7 @@ export default function Calendar() {
 
         {/* Calendar header - days of week (abbreviated for mobile) */}
         <div className="grid grid-cols-7 gap-1 mb-1">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day) => (
+          {['Su', 'M', 'T', 'W', 'Th', 'F', 'S'].map((day) => (
             <div key={day} className="text-center font-semibold py-2 bg-muted/50 text-xs">
               {day}
             </div>
