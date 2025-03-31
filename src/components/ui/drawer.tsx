@@ -3,6 +3,12 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
+// Note: 'vaul' is a headless drawer component library by emilkowalski_
+// If you're having issues with it, you need to install it:
+// pnpm add vaul
+// npm install vaul
+// yarn add vaul
+
 import { cn } from "@/lib/utils"
 
 function Drawer({

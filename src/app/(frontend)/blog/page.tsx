@@ -18,6 +18,7 @@ const BlogPage = async () => {
     sort: '-publishedDate',
   })
   const { docs } = blogPosts
+  console.log(docs)
 
   return (
     <div className="container mx-auto py-8 px-4">
