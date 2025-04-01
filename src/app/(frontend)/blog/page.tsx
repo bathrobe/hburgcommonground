@@ -67,7 +67,7 @@ const BlogCard = ({ post }: { post: any }) => {
 
       {/* Card content */}
       <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2 line-clamp-2">{post.title}</h2>
+        <h2 className="text-xl font-semibold mb-4 line-clamp-2">{post.title}</h2>
         <div className="flex justify-between items-center mb-3">
           <p className="text-gray-600 text-sm">{formattedDate}</p>
           {post.author?.name && (
