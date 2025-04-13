@@ -6,6 +6,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { LinkJSXConverter } from '@payloadcms/richtext-lexical/react'
 import type { DefaultNodeTypes, SerializedLinkNode } from '@payloadcms/richtext-lexical'
+import YouTubeComponent from './YouTubeComponent'
 
 // Function to convert internal links to proper href values
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -29,11 +30,16 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 // Set up JSX converters for rich text
 const getJSXConverters = ({ defaultConverters }: { defaultConverters: any }) => ({
   ...defaultConverters,
+  blocks: {
+    Youtube: ({ node }: { node: any }) => {
+      return <YouTubeComponent id={node.fields.id} />
+    },
+  },
   ...LinkJSXConverter({ internalDocToHref }),
 })
 
 export const generateMetadata = async ({ params }: { params: any }) => {
-  const { slug } = params
+  const { slug } = await params
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
     collection: 'faq',

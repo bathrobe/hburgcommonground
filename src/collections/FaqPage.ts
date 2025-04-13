@@ -1,4 +1,15 @@
+import { lexicalEditor, BlocksFeature } from '@payloadcms/richtext-lexical'
 import { CollectionConfig } from 'payload'
+
+// Define languages with proper typing
+const languages: Record<string, string> = {
+  ts: 'TypeScript',
+  js: 'JavaScript',
+  html: 'HTML',
+  css: 'CSS',
+  jsx: 'React JSX',
+  python: 'Python',
+}
 
 const FaqPage: CollectionConfig = {
   slug: 'faq',
@@ -23,10 +34,34 @@ const FaqPage: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    // {
+    //   name: 'content',
+    //   type: 'richText',
+    //   required: true,
+    // },
     {
       name: 'content',
       type: 'richText',
-      required: true,
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({
+            blocks: [
+              {
+                slug: 'Youtube',
+                fields: [
+                  {
+                    type: 'text',
+                    name: 'id',
+                    required: true,
+                  },
+                ],
+              },
+            ],
+            inlineBlocks: [],
+          }),
+        ],
+      }),
     },
   ],
 }

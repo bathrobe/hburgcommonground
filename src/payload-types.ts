@@ -227,7 +227,7 @@ export interface Faq {
   id: number;
   title: string;
   slug: string;
-  content: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -241,7 +241,7 @@ export interface Faq {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
