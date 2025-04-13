@@ -26,6 +26,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      actions: ['/components/HelloWorld'],
+    },
   },
   collections: [Users, Media, Events, BlogPost, Authors, FaqPage],
   editor: lexicalRichTextEditor,
