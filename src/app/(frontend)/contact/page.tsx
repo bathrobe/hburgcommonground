@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const metadata = {
-  title: 'Contact | My Site',
+  title: 'Contact | Common Ground',
   description: 'Get in touch with us',
 }
 
@@ -15,16 +15,22 @@ const ContactPage = () => {
 
       <div className="max-w-lg">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Email</h2>
-          <p className="text-gray-600">contact@example.com</p>
+          <h2 className="text-xl font-semibold mb-2">Common Ground Director</h2>
+          <p className="text-gray-600">Irvin Peckham</p>
+          <p className="text-gray-600">
+            <a href="mailto:iwpeckham@gmail.com" className="text-blue-600 hover:underline">
+              iwpeckham@gmail.com
+            </a>
+          </p>
         </div>
 
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Address</h2>
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Website Admin/AI Helper</h2>
+          <p className="text-gray-600">Joe Holmes</p>
           <p className="text-gray-600">
-            123 Main Street
-            <br />
-            Anytown, ST 12345
+            <a href="mailto:hello@joeholmes.dev" className="text-blue-600 hover:underline">
+              hello@joeholmes.dev
+            </a>
           </p>
         </div>
       </div>
