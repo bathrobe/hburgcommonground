@@ -199,7 +199,6 @@ export interface Blogpost {
     };
     [k: string]: unknown;
   } | null;
-  featureImg: number | Media;
   /**
    * Date this post was published
    */
@@ -374,7 +373,6 @@ export interface BlogpostsSelect<T extends boolean = true> {
   author?: T;
   description?: T;
   content?: T;
-  featureImg?: T;
   publishedDate?: T;
   updatedAt?: T;
   createdAt?: T;

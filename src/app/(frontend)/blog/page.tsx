@@ -2,7 +2,6 @@ import React from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Link from 'next/link'
-import Image from 'next/image'
 
 export const metadata = {
   title: 'Blog | My Site',
@@ -52,30 +51,18 @@ const BlogCard = ({ post }: { post: any }) => {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="block border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="block border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white h-full"
     >
-      {/* Feature Image */}
-      <div className="relative h-48 w-full">
-        {post.featureImg?.url ? (
-          <Image src={post.featureImg.url} alt={post.title} fill className="object-cover" />
-        ) : (
-          <div className="bg-gray-200 h-full w-full flex items-center justify-center">
-            <span className="text-gray-400">No image</span>
-          </div>
-        )}
-      </div>
-
-      {/* Card content */}
-      <div className="p-4">
-        <h2 className="text-xl font-semibold mb-4 line-clamp-2">{post.title}</h2>
-        <div className="flex justify-between items-center mb-3">
-          <p className="text-gray-600 text-sm">{formattedDate}</p>
-          {post.author?.name && (
-            <p className="text-gray-700 text-sm italic">By {post.author.name}</p>
-          )}
+      <div className="p-6">
+        <h2 className="text-xl font-semibold mb-3 line-clamp-2 text-gray-900">{post.title}</h2>
+        <div className="flex justify-between items-center mb-4 text-sm">
+          <p className="text-gray-600">{formattedDate}</p>
+          {post.author?.name && <p className="text-gray-700 italic">By {post.author.name}</p>}
         </div>
         <p className="text-gray-600 mb-4 line-clamp-3">{post.description}</p>
-        <span className="text-blue-600 hover:text-blue-800 font-medium">Read more</span>
+        <span className="text-blue-600 hover:text-blue-800 font-medium inline-block">
+          Read more →
+        </span>
       </div>
     </Link>
   )

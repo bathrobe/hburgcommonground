@@ -40,12 +40,11 @@ export const BlogPost: CollectionConfig = {
       type: 'richText',
       editor: lexicalEditor({}),
     },
-    {
-      name: 'featureImg',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
+    // {
+    //   name: 'featureImg',
+    //   type: 'upload',
+    //   relationTo: 'media',
+    // },
     {
       name: 'publishedDate',
       type: 'date',
