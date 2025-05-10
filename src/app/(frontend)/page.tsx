@@ -136,7 +136,7 @@ export default async function HomePage() {
                 <h3 className="text-xl font-bold mb-2">Resources & Guides</h3>
                 <p className="text-gray-600 mb-4">
                   Access resources on conducting civil conversations, effective research methods,
-                  writing persuasive op-eds, and more.
+                  writing fact-checked op-eds, and more.
                 </p>
                 <Link href="/faq" className="text-amber-600 font-semibold hover:text-amber-800">
                   Browse resources →
